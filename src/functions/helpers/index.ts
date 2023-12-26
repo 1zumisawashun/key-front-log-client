@@ -13,22 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// import { hello } from './functions/helpers/example-module';
-// import { client } from './features/client';
-
-/* eslint-disable */
-// function doPost(e: any) {
-//   client(e);
-// }
-
-// console.log(hello());
-
-function doPost(e: GoogleAppsScript.Events.DoPost) {
-  const params = JSON.parse(e.postData.contents);
-
-  // NOTE:SlackのEvent SubscriptionsのRequest Verification用
-  if (params.type === 'url_verification') {
-    return ContentService.createTextOutput(params.challenge);
-  }
-  // 省略...
-}
+export { sendToSlack } from './slack/send-to-slack';

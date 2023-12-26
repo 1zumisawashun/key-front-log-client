@@ -13,22 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// import { hello } from './functions/helpers/example-module';
-// import { client } from './features/client';
 
-/* eslint-disable */
-// function doPost(e: any) {
-//   client(e);
-// }
+export const SLACK_INCOMING_WEBHOOKS =
+  PropertiesService.getScriptProperties().getProperty(
+    'SLACK_INCOMING_WEBHOOKS'
+  ) as string;
 
-// console.log(hello());
-
-function doPost(e: GoogleAppsScript.Events.DoPost) {
-  const params = JSON.parse(e.postData.contents);
-
-  // NOTE:SlackのEvent SubscriptionsのRequest Verification用
-  if (params.type === 'url_verification') {
-    return ContentService.createTextOutput(params.challenge);
-  }
-  // 省略...
-}
+export const BOT_USER_OAUTH_TOKEN =
+  PropertiesService.getScriptProperties().getProperty(
+    'BOT_USER_OAUTH_TOKEN'
+  ) as string;
