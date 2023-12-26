@@ -13,33 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {
-  SLACK_INCOMING_WEBHOOKS,
-  BOT_USER_OAUTH_TOKEN,
-} from '../../constants/script-properties';
+import { SLACK_INCOMING_WEBHOOKS } from '../../constants/script-properties';
 
-type SendToSlackType = {
-  channelId?: string;
-  thread_ts?: string;
-  message?: any;
-};
-
-export const sendToSlack = ({
-  channelId,
-  thread_ts,
-  message,
-}: SendToSlackType) => {
-  // NOTE:スレッドに投げる時はtoken必要だったっけ？
-  const payload = JSON.stringify({
-    token: BOT_USER_OAUTH_TOKEN,
-    channel: channelId,
-    text: JSON.stringify(message),
-    thread_ts: thread_ts,
-  });
+export const sendToSlack = ({ message }: { message: string }) => {
+  const jsonData = { text: message };
+  const payload = JSON.stringify(jsonData);
 
   UrlFetchApp.fetch(SLACK_INCOMING_WEBHOOKS, {
     method: 'post',
     contentType: 'application/json',
-    payload: payload,
+    payload,
   });
 };

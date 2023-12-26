@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// import { hello } from './functions/helpers/example-module';
-// import { client } from './features/client';
+import { hello } from './functions/helpers/example-module';
+import { sendToSlack } from './functions/helpers/slack/send-to-slack';
 
-/* eslint-disable */
-// function doPost(e: any) {
-//   client(e);
-// }
+console.log(hello());
 
-// console.log(hello());
+const KEY_FRONT_BOT_ID = 'B06B4JMMUHL';
+const GENBANEKO_BOT_ID = 'B06BY6EKA3B';
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 function doPost(e: GoogleAppsScript.Events.DoPost) {
   const params = JSON.parse(e.postData.contents);
 
@@ -30,5 +29,26 @@ function doPost(e: GoogleAppsScript.Events.DoPost) {
   if (params.type === 'url_verification') {
     return ContentService.createTextOutput(params.challenge);
   }
-  // 省略...
+
+  const { type, bot_id, text, reaction } = params.event;
+
+  // NOTE:無限ループの回避
+  if (bot_id === GENBANEKO_BOT_ID) return;
+
+  // NOTE:Slackの3秒ルールで発生するリトライをキャッシュする
+  const cache = CacheService.getScriptCache();
+  if (cache.get(params.event_id) === 'done') return;
+  cache.put(params.event_id, 'done', 600);
+
+  if (['message'].includes(type)) {
+    if (bot_id === KEY_FRONT_BOT_ID) {
+      sendToSlack({ message: JSON.stringify(text) });
+    }
+  }
+
+  if (['reaction_added'].includes(type)) {
+    if (reaction === 'notion') {
+      sendToSlack({ message: reaction });
+    }
+  }
 }

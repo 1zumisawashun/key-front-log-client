@@ -23,3 +23,13 @@ export const BOT_USER_OAUTH_TOKEN =
   PropertiesService.getScriptProperties().getProperty(
     'BOT_USER_OAUTH_TOKEN'
   ) as string;
+
+export const NOTION_DATABASE_ID =
+  PropertiesService.getScriptProperties().getProperty(
+    'NOTION_DATABASE_ID'
+  ) as string;
+
+export const NOTION_INTEGRATION_TOKEN =
+  PropertiesService.getScriptProperties().getProperty(
+    'NOTION_INTEGRATION_TOKEN'
+  ) as string;

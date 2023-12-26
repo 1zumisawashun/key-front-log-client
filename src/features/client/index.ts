@@ -25,13 +25,13 @@ export function client(e: any) {
 
   const event = params.event;
   const type = event.type;
-  const bot_id = event.bot_id;
+  const bot_id = event?.bot_id;
 
   // NOTE:Slack Botによるメンションを無視する（無限ループを回避する）
   // NOTE:自分自身（mosukun Bot）だけは無視して他のbotとの会話は可能にする
   sendToSlack({
-    channelId: event.channel,
-    thread_ts: event.thread_ts || event.ts,
+    // channelId: event.channel,
+    // thread_ts: event.thread_ts || event.ts,
     message: bot_id ?? params.event.text,
   });
   // if (bot_id === 'B05CW8PF316') return;
@@ -48,28 +48,28 @@ export function client(e: any) {
     // NOTE:RSS Bot以外は早期リターンする
     if (bot_id !== 'B03GXHC7BMF') return;
 
-    const channelId = event.channel;
-    const thread_ts = event.thread_ts || event.ts;
+    // const channelId = event.channel;
+    // const thread_ts = event.thread_ts || event.ts;
 
     // const message = getConversationsReplies(channelId, thread_ts);
     // const content = messageFormatter(message);
     // const text = getChatGptMessage(`日本語で要約してください。${content}`);
 
-    sendToSlack({ channelId, thread_ts, message: '' });
+    // sendToSlack({ channelId, thread_ts, message: '' });
   }
 
   if (['reaction_added'].includes(type)) {
     // NOTE:「要約して」スタンプだけに反応させる
     if (event.reaction !== 'youyaku') return;
 
-    const channelId = event.item.channel;
-    const thread_ts = event.item.ts;
+    // const channelId = event.item.channel;
+    // const thread_ts = event.item.ts;
 
     // const message = getConversationsReplies(channelId, thread_ts);
     // const content = messageFormatter(message);
     // const text = getChatGptMessage(`日本語で要約してください。${content}`);
 
-    sendToSlack({ channelId, thread_ts, message: '' });
+    // sendToSlack({ channelId, thread_ts, message: '' });
   }
 
   return;
